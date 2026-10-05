@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "global.hpp"
+#include "lorenz.hpp"
 
 int main() {
 
@@ -17,12 +18,16 @@ int main() {
     settings.antiAliasingLevel = 8;
     sf::RenderWindow window(
         sf::VideoMode({WIDTH, HEIGHT}),
-        "sfml project template", 
+        "lorenz-system", 
         sf::Style::Default, 
         sf::State::Windowed,
         settings
     );
     window.setVerticalSyncEnabled(true);
+
+    sf::RenderTexture canvas({WIDTH, HEIGHT});
+    canvas.clear(sf::Color(20, 20, 20));
+    canvas.display();
 
     const sf::Font font("fonts/Consolas.ttf");
 
@@ -35,6 +40,12 @@ int main() {
     deltaTimeText.setCharacterSize(20);
     deltaTimeText.setFillColor(sf::Color(255, 255, 255, 100));
     deltaTimeText.setPosition({10, 30});
+
+    Lorenz L1(
+        10, 28, 8/3,
+        0.9, 0, 0,
+        sf::Color::White
+    );
 
     int frameCounter = 0;
     const int updateEvery = 72;
@@ -67,8 +78,16 @@ int main() {
 
         }
 
+        L1.update(dt);
+
         window.clear(sf::Color(20, 20, 20));
+
+            L1.render(&canvas);
+
+            canvas.display();
+            sf::Sprite canvasSprite(canvas.getTexture());
             
+            window.draw(canvasSprite);
             window.draw(fpsText);
             window.draw(deltaTimeText);
 
