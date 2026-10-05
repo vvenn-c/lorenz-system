@@ -23,7 +23,7 @@ int main() {
         sf::State::Windowed,
         settings
     );
-    window.setVerticalSyncEnabled(true);
+    window.setVerticalSyncEnabled(false);
 
     sf::RenderTexture canvas({WIDTH, HEIGHT});
     canvas.clear(sf::Color(20, 20, 20));
@@ -45,6 +45,18 @@ int main() {
         10, 28, 8/3,
         0.9, 0, 0,
         sf::Color::White
+    );
+
+    Lorenz L2(
+        10, 28, 8/3,
+        1, 0, 0,
+        sf::Color::Red
+    );
+
+    Lorenz L3(
+        10, 28, 8/3,
+        1.1, 0, 0,
+        sf::Color::Blue
     );
 
     int frameCounter = 0;
@@ -79,10 +91,14 @@ int main() {
         }
 
         L1.update(dt);
+        // L2.update(dt);
+        // L3.update(dt);
 
         window.clear(sf::Color(20, 20, 20));
 
             L1.render(&canvas);
+            // L2.render(&canvas);
+            // L3.render(&canvas);
 
             canvas.display();
             sf::Sprite canvasSprite(canvas.getTexture());
